@@ -1,0 +1,42 @@
+# Neon Database Schemas
+
+This directory will contain Drizzle ORM schemas for Neon PostgreSQL tables.
+
+## Example Schema
+
+When ready to add Neon tables, create files like this:
+
+```typescript
+// prayer-requests.ts
+import { pgTable, uuid, varchar, text, boolean, integer, timestamp } from 'drizzle-orm/pg-core';
+
+export const prayerRequests = pgTable('prayer_requests', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  title: varchar('title', { length: 255 }).notNull(),
+  description: text('description').notNull(),
+  categoryId: integer('category_id'),
+  contactId: integer('contact_id'), // Link to MP Contact_ID
+  createdAt: timestamp('created_at').defaultNow().notNull(),
+  updatedAt: timestamp('updated_at').defaultNow().notNull(),
+  isAnonymous: boolean('is_anonymous').default(false).notNull(),
+  isApproved: boolean('is_approved').default(false).notNull(),
+  prayerCount: integer('prayer_count').default(0).notNull(),
+});
+
+// Export type for TypeScript
+export type PrayerRequest = typeof prayerRequests.$inferSelect;
+export type NewPrayerRequest = typeof prayerRequests.$inferInsert;
+```
+
+## Running Migrations
+
+```bash
+# Generate migration from schema changes
+npm run db:generate
+
+# Apply migrations to database
+npm run db:migrate
+
+# Open Drizzle Studio (visual database browser)
+npm run db:studio
+```

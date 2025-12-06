@@ -1,8 +1,13 @@
 # Church Setup Guide
 
-This guide walks through setting up Gospel Kit for a new church, from repository creation to first deployment.
+This guide walks through setting up Gospel Kit for a new church, from repository
+creation to first deployment.
 
 **Estimated Time:** 2-3 hours for complete setup
+
+**For day-to-day development:** After setup, see
+**[DEVELOPMENT.md](./DEVELOPMENT.md)** for testing, formatting, database
+workflows, and IDE setup.
 
 ---
 
@@ -10,7 +15,8 @@ This guide walks through setting up Gospel Kit for a new church, from repository
 
 Before starting, ensure you have:
 
-- [ ] MinistryPlatform instance URL (e.g., `https://yourchurch.ministryplatform.com`)
+- [ ] MinistryPlatform instance URL (e.g.,
+      `https://yourchurch.ministryplatform.com`)
 - [ ] MP Admin access to create OAuth clients
 - [ ] MP Admin access to create/register stored procedures
 - [ ] SQL Server Management Studio (SSMS) access to MP database
@@ -140,6 +146,7 @@ GO
 ```
 
 **Test it:**
+
 ```sql
 -- Replace with actual User_GUID from dp_Users table
 EXEC [dbo].[api_Custom_GetUserRolesAndGroups_JSON]
@@ -158,6 +165,7 @@ EXEC [dbo].[api_Custom_GetUserRolesAndGroups_JSON]
 ### Step 7: Configure Table Permissions
 
 Ensure your API user has permissions on these tables:
+
 - `dp_Users`
 - `dp_User_Roles`
 - `dp_Roles`
@@ -180,7 +188,8 @@ Create environment file at the **monorepo root**:
 cp .env.example .env
 ```
 
-**Why at root?** Environment variables are workspace-wide and shared across all apps. This matches the Vercel team-wide environment variables strategy.
+**Why at root?** Environment variables are workspace-wide and shared across all
+apps. This matches the Vercel team-wide environment variables strategy.
 
 Edit `.env`:
 
@@ -199,6 +208,7 @@ NODE_ENV=development
 ```
 
 Generate `NEXTAUTH_SECRET`:
+
 ```bash
 openssl rand -base64 32
 ```
@@ -210,12 +220,13 @@ Update branding colors in `apps/platform/src/app/globals.css`:
 ```css
 :root {
   /* Church Branding Colors - Customize these for your church */
-  --brand-primary: #61bc47;    /* Your primary brand color */
-  --brand-secondary: #1c2b39;  /* Your secondary brand color */
+  --brand-primary: #61bc47; /* Your primary brand color */
+  --brand-secondary: #1c2b39; /* Your secondary brand color */
 }
 ```
 
 Update church name:
+
 1. Search for "Woodside Bible Church" and replace
 2. Update page titles in components
 3. Update PWA manifest in `apps/platform/src/app/api/manifest/route.ts`
@@ -228,12 +239,14 @@ npm run dev
 ```
 
 Visit `http://localhost:3000`:
+
 - [ ] Platform loads without errors
 - [ ] Can sign in with MP credentials
 - [ ] User menu shows your name and roles
 - [ ] Counter app is accessible (if you have Events data)
 
 **Troubleshooting:** If issues, run:
+
 ```bash
 /mp-troubleshoot
 ```
@@ -337,7 +350,8 @@ Register in MP Admin Console → API Procedures.
 4. Configure build settings:
    - **Framework Preset:** Next.js
    - **Root Directory:** `apps/platform`
-   - **Build Command:** `cd ../.. && npm run build --filter=@church/apps-platform`
+   - **Build Command:**
+     `cd ../.. && npm run build --filter=@church/apps-platform`
    - **Install Command:** `npm install`
    - **Output Directory:** `.next` (default)
 
@@ -345,7 +359,8 @@ Register in MP Admin Console → API Procedures.
 
 **Recommended Approach: Team-Wide + Project-Specific**
 
-Since you'll likely have multiple projects (apps platform, microsites, etc.) sharing the same MinistryPlatform instance:
+Since you'll likely have multiple projects (apps platform, microsites, etc.)
+sharing the same MinistryPlatform instance:
 
 1. **Team Settings** → **Environment Variables** (shared across all projects):
    - `MINISTRY_PLATFORM_BASE_URL=https://yourchurch.ministryplatform.com`
@@ -358,6 +373,7 @@ Since you'll likely have multiple projects (apps platform, microsites, etc.) sha
    - `NODE_ENV=production`
 
 **Why this approach?**
+
 - MP credentials are shared across all your church's apps
 - Each app has its own auth secret and URL
 - No duplication when you add microsites, widgets, etc.
@@ -390,6 +406,7 @@ Now that you have your production URL:
 ### Step 15: Test Production
 
 Visit `https://apps.yourchurch.org`:
+
 - [ ] Platform loads over HTTPS
 - [ ] SSL certificate is valid
 - [ ] Can sign in with MP credentials
@@ -402,11 +419,13 @@ Visit `https://apps.yourchurch.org`:
 ### Step 16: Create App Icons
 
 Create icons in these sizes:
+
 - `192x192` - Standard icon
 - `512x512` - Large icon
 - `180x180` - Apple touch icon
 
 Place in `apps/platform/public/`:
+
 - `/icon-192.png`
 - `/icon-512.png`
 - `/apple-touch-icon.png`
@@ -424,6 +443,7 @@ description: "Ministry applications for Your Church Name",
 ### Step 18: Test PWA Installation
 
 On mobile device:
+
 1. Visit `https://apps.yourchurch.org`
 2. Look for "Add to Home Screen" prompt
 3. Install and test as standalone app
@@ -456,7 +476,8 @@ VALUES
 GO
 ```
 
-Then create API route at `apps/platform/src/app/api/applications/route.ts` to fetch these.
+Then create API route at `apps/platform/src/app/api/applications/route.ts` to
+fetch these.
 
 ---
 
@@ -481,6 +502,7 @@ After completing setup:
 ### Learn the Skills
 
 Familiarize yourself with Claude skills:
+
 ```bash
 /new-micro-app      # Create your first custom app
 /new-api-route      # Add API endpoints
@@ -492,11 +514,13 @@ Familiarize yourself with Claude skills:
 ### Create Your First App
 
 Use the skill to scaffold a new micro-app:
+
 ```bash
 /new-micro-app
 ```
 
 Example apps to build:
+
 - **Volunteer Scheduler** - Sign-ups for serving teams
 - **Prayer Requests** - Submit and manage prayer needs
 - **Small Groups** - Browse and join groups
@@ -520,6 +544,7 @@ Example apps to build:
 **Cause:** OAuth configuration mismatch
 
 **Fix:**
+
 1. Verify `MINISTRY_PLATFORM_CLIENT_ID` and `CLIENT_SECRET` are correct
 2. Check redirect URI in MP exactly matches your app URL
 3. Ensure scopes include `openid`, `offline_access`, and MP API scope
@@ -529,6 +554,7 @@ Example apps to build:
 **Cause:** Stored procedure not registered or wrong name
 
 **Fix:**
+
 1. Verify `api_Custom_GetUserRolesAndGroups_JSON` exists in database
 2. Check it's registered in MP Admin Console → API Procedures
 3. Test procedure directly in SSMS with your User_GUID
@@ -538,6 +564,7 @@ Example apps to build:
 **Cause:** Workspace dependencies not resolving
 
 **Fix:**
+
 1. Ensure build command includes `cd ../..` to run from monorepo root
 2. Verify all `@church/*` packages are in `package.json` dependencies
 3. Check build logs for specific TypeScript errors
@@ -547,6 +574,7 @@ Example apps to build:
 **Cause:** Missing data or permissions
 
 **Fix:**
+
 1. Ensure Events table has data for today's date
 2. Check API user has SELECT permission on Events table
 3. Verify Event_Type_ID filter matches your MP data
@@ -567,9 +595,11 @@ If you encounter issues:
 
 ## 🎉 You're Ready!
 
-Your Gospel Kit instance is now set up and ready for development. Start building custom apps for your church!
+Your Gospel Kit instance is now set up and ready for development. Start building
+custom apps for your church!
 
 **Remember:**
+
 - Always test locally before deploying
 - Use TypeScript types from `@church/database`
 - Enforce userId on all CREATE/UPDATE operations

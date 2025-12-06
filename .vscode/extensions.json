@@ -1,0 +1,26 @@
+{
+  "recommendations": [
+    // Code formatting and linting
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+
+    // Tailwind CSS
+    "bradlc.vscode-tailwindcss",
+
+    // TypeScript and React
+    "dsznajder.es7-react-js-snippets",
+
+    // Markdown and MDX
+    "unifiedjs.vscode-mdx",
+
+    // SQL
+    "mtxr.sqltools",
+
+    // Git
+    "eamodio.gitlens",
+
+    // Environment files
+    "mikestead.dotenv"
+  ],
+  "unwantedRecommendations": []
+}
