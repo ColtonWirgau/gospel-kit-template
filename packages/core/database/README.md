@@ -1,13 +1,14 @@
 # @church/database
 
-Zod schemas and database utilities for MinistryPlatform tables.
+Zod schemas and database utilities for all database systems used in Gospel Kit.
 
 ## Features
 
-- ✅ Type-safe Zod schemas for MP baseline tables
-- ✅ Schemas for custom church-specific tables
+- ✅ Type-safe Zod schemas for MinistryPlatform tables
+- ✅ Type-safe Zod schemas for Neon PostgreSQL tables
 - ✅ Runtime validation
 - ✅ TypeScript types auto-generated from schemas
+- ✅ Organized by database system (MP, Neon, Rock RMS, etc.)
 
 ## Installation
 
@@ -17,13 +18,30 @@ npm install @church/database
 
 ## Usage
 
+This package is organized by database system. You can import from the root (all databases) or from specific database modules.
+
+### Import Patterns
+
+```typescript
+// Option 1: Import from root (all databases mixed)
+import { Event, Contact, PrayerRequest } from '@church/database';
+
+// Option 2: Import from specific database (recommended for clarity)
+import { Event, Contact } from '@church/database/ministry-platform';
+import { PrayerRequest, WidgetSession } from '@church/database/neon';
+```
+
+---
+
+## MinistryPlatform Schemas
+
 ### Baseline Table Schemas
 
 Schemas for MinistryPlatform's built-in tables (only fields actually used in your apps):
 
 ```typescript
-import { EventSchema, ContactSchema, CongregationSchema } from '@church/database';
-import type { Event, Contact } from '@church/database';
+import { EventSchema, ContactSchema, CongregationSchema } from '@church/database/ministry-platform';
+import type { Event, Contact } from '@church/database/ministry-platform';
 
 // Runtime validation
 const event = EventSchema.parse(data);
@@ -58,17 +76,62 @@ const metric: EventMetric = {
 };
 ```
 
+---
+
+## Neon PostgreSQL Schemas
+
+### Custom Application Data
+
+Use Neon for app-specific data that doesn't belong in MinistryPlatform:
+
+```typescript
+import { PrayerRequestSchema, WidgetSessionSchema } from '@church/database/neon';
+import type { PrayerRequest } from '@church/database/neon';
+
+// Example: Prayer widget data
+const prayerRequest: PrayerRequest = {
+  id: '123e4567-e89b-12d3-a456-426614174000',
+  title: 'Healing for my mother',
+  description: 'Please pray for...',
+  created_at: new Date(),
+  // ...
+};
+```
+
+### When to Use Neon vs MinistryPlatform
+
+**Use MinistryPlatform for:**
+- Core church data (contacts, events, groups, giving)
+- Data that needs to be in MP for reporting
+- Data managed by church staff in MP portal
+
+**Use Neon for:**
+- Widget-specific data (prayer requests, voting responses)
+- Anonymous submissions
+- Session/cache data
+- Analytics and tracking
+- Data that doesn't fit MP's structure
+
+---
+
 ## Schema Organization
 
 ```
-schemas/
-├── baseline/           # MP built-in tables
-│   ├── events.ts
-│   ├── contacts.ts
-│   └── congregations.ts
+src/
+├── ministry-platform/
+│   └── schemas/
+│       ├── baseline/       # MP built-in tables
+│       │   ├── events.ts
+│       │   ├── contacts.ts
+│       │   └── congregations.ts
+│       └── custom/         # Church-specific MP tables
+│           └── event-metrics.ts
 │
-└── custom/            # Church-specific tables
-    └── event-metrics.ts
+└── neon/
+    └── schemas/            # Neon custom tables
+        ├── prayer-requests.ts (future)
+        ├── widget-sessions.ts (future)
+        └── voting.ts (future)
 ```
 
 ## Adding New Schemas

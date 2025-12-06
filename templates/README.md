@@ -10,7 +10,7 @@ Starter templates for creating new applications in Gospel Kit.
 
 - **Location:** `apps/platform/src/app/(app)/my-app/`
 - **URL:** `apps.yourchurch.org/my-app`
-- **Examples:** Projects dashboard, annual meeting voting, team scheduling, people search
+- **Examples:** Projects dashboard, counter app, voting app, team scheduling, people search
 - **Authentication:** Flexible (can be required, optional, or allow anonymous access)
 - **Deployment:** Part of apps platform (single Vercel project)
 
@@ -42,14 +42,14 @@ Starter templates for creating new applications in Gospel Kit.
 
 ## Quick Comparison
 
-| Feature | Micro-App | Microsite | Widget |
-|---------|-----------|-----------|--------|
-| **Audience** | Church community (staff, volunteers, congregation) | Public & outreach | Public (embedded) |
-| **Domain** | apps.yourchurch.org | groups.yourchurch.org | widgets.yourchurch.org |
-| **Auth** | Flexible (required, optional, or anonymous) | Optional (usually public) | Optional |
-| **Deployment** | Shared | Separate | Separate or shared |
-| **Full Page** | Yes | Yes | No (embeds in parent) |
-| **Example** | Projects, annual meeting voting, team scheduling | Groups directory, public events | Event registration form |
+| Feature        | Micro-App                                          | Microsite                       | Widget                  |
+| -------------- | -------------------------------------------------- | ------------------------------- | ----------------------- |
+| **Audience**   | Church community (staff, volunteers, congregation) | Public & outreach               | Public (embedded)       |
+| **Domain**     | apps.yourchurch.org                                | groups.yourchurch.org           | widgets.yourchurch.org  |
+| **Auth**       | Flexible (required, optional, or anonymous)        | Optional (usually public)       | Optional                |
+| **Deployment** | Shared                                             | Separate                        | Separate or shared      |
+| **Full Page**  | Yes                                                | Yes                             | No (embeds in parent)   |
+| **Example**    | Projects, annual meeting voting, team scheduling   | Groups directory, public events | Event registration form |
 
 ## Template Status
 
@@ -86,6 +86,7 @@ cp -r templates/microsite microsites/groups
 ---
 
 **Next Steps:**
+
 - Use `/new-micro-app` to build internal tools
 - Create actual template code when patterns are established
 - Document patterns in ADRs as they emerge

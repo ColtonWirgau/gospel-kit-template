@@ -1,8 +1,14 @@
-// Baseline schemas (MP built-in tables)
-export * from '../schemas/baseline/events';
-export * from '../schemas/baseline/contacts';
-export * from '../schemas/baseline/congregations';
-export * from '../schemas/baseline/metrics';
+// Database Package
+//
+// This package provides type-safe schemas for all database systems used in Gospel Kit.
+// Schemas are organized by database system (MinistryPlatform, Neon, etc.)
 
-// Custom schemas (church-specific tables)
-export * from '../schemas/custom/event-metrics';
+// Re-export all MinistryPlatform schemas (for backward compatibility)
+export * from './ministry-platform';
+
+// Re-export all Neon schemas
+export * from './neon';
+
+// Future database systems can be added here:
+// export * from './rock-rms';
+// export * from './planning-center';
