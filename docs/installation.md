@@ -1,6 +1,6 @@
 # Installation
 
-First Steps:
+## First Steps:
 TheHub Contact/Company
 TheHub User Account
 TheHub API Client
